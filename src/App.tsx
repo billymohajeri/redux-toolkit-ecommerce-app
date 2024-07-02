@@ -1,5 +1,11 @@
+import Products from './components/Products'
+
 const App = () => {
-  return <div>App</div>
+  return (
+    <div>
+      <Products />
+    </div>
+  )
 }
 
 export default App
