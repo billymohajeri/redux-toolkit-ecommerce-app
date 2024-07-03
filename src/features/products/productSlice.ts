@@ -15,7 +15,7 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async ()
 
 export const fetchSingleProduct = createAsyncThunk(
   'products/fetchSingleProduct',
-  async (id: number) => {
+  async (id: string) => {
     try {
       const response = await fetch(`https://dummyjson.com/products/${id}`)
       console.log(`https://dummyjson.com/products/${id}`)

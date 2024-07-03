@@ -1,18 +1,18 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../store/store'
-import { useEffect } from 'react'
-import { fetchProducts } from '../features/products/productSlice'
-import { Link } from 'react-router-dom'
-import "bootstrap/dist/css/bootstrap.css";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { AppDispatch, RootState } from '../store/store';
+import { fetchProducts } from '../features/products/productSlice';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ProductList = () => {
-  const dispatch: AppDispatch = useDispatch()
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchProducts())
-  }, [dispatch])
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
-  const { products, loading, error } = useSelector((state: RootState) => state.productReducer)
+  const { products, loading, error } = useSelector((state: RootState) => state.productR);
 
   return (
     <div className="container mt-5">
@@ -21,19 +21,23 @@ const ProductList = () => {
       {error && <p className="text-danger">{error}</p>}
       <ul className="list-group px-5">
         {products.map((product) => (
-          <li key={product.id} className="list-group-item">
+          <li key={product.id} className="list-group-item list-group-item-action list-group-item-primary">
             <Link
               to={`/products/${product.id}`}
-              className="list-group-item list-group-item-action"
+              className="d-flex align-items-center text-dark"
               aria-current="true"
-              state={product}>
-              <b>{product.category}</b>: {product.title}
+              state={product}
+            >
+              <img src={product.images[0]} className="img-thumbnail me-3" style={{ width: '50px', height: '50px' }} alt={product.title} />
+              <div>
+                <b>{product.title}</b> ({product.category})
+              </div>
             </Link>
           </li>
         ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default ProductList
+export default ProductList;
