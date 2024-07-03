@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { AppDispatch, RootState } from '../store/store'
 import { fetchSingleProduct } from '../features/products/productSlice'
-import 'bootstrap/dist/css/bootstrap.min.css'
 
 const ProductDetails = () => {
   const navigate = useNavigate()
