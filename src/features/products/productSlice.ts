@@ -9,11 +9,15 @@ export const fetchProducts = createAsyncThunk(
     let url = 'https://dummyjson.com/products'
     try {
       if (searchValue) {
-        // 'https://dummyjson.com/products?limit=10&skip=10&select=title,price'
         url += `/search?q=${searchValue}`
       }
       const response = await fetch(url)
       const data = await response.json()
+      if (searchValue) {
+        data.products = data.products.filter((product: { title: string }) =>
+          product.title.toLowerCase().includes(searchValue.toLowerCase())
+        )
+      }
       return data.products
     } catch (error) {
       console.log(error)
