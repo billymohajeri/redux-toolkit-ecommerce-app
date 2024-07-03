@@ -5,12 +5,23 @@ const initialState: ProductsState = { products: [], product: null, loading: fals
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
-  async (searchValue: string) => {
+  async ({ searchValue, sortValue }: { searchValue: string; sortValue: string }) => {
     let url = 'https://dummyjson.com/products'
     try {
       if (searchValue) {
+        console.log(searchValue)
         url += `/search?q=${searchValue}`
       }
+      if (sortValue) {
+        if (searchValue) {
+          url += '&'
+        } else {
+          url += '?'
+        }
+        url += `sortBy=${sortValue}`
+        console.log(url)
+      }
+
       const response = await fetch(url)
       const data = await response.json()
       if (searchValue) {

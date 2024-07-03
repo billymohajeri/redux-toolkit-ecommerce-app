@@ -8,13 +8,24 @@ const ProductList = () => {
   const dispatch: AppDispatch = useDispatch()
 
   const [searchValue, setSearchValue] = useState('')
+  const [sortValue, setSortValue] = useState('')
 
   useEffect(() => {
-    dispatch(fetchProducts(searchValue))
-  }, [dispatch, searchValue])
+    dispatch(fetchProducts({ searchValue, sortValue }))
+  }, [dispatch, searchValue, sortValue])
 
   const handleSearchValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value)
+  }
+
+  const handleSortValueChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSortValue(event.target.value)
+  }
+
+  const handleReset = () => {
+    setSearchValue('')
+    setSortValue('')
+    dispatch(fetchProducts({ searchValue: '', sortValue: '' }))
   }
 
   const { products, loading, error } = useSelector((state: RootState) => state.productR)
@@ -30,6 +41,26 @@ const ProductList = () => {
         className="form-control mb-3"
         placeholder="Search for products..."
       />
+      <div className="d-flex justify-content-between mb-3">
+        <button onClick={handleReset} className="btn btn-secondary">
+          Reset
+        </button>
+        <select
+          name="sortSelect"
+          value={sortValue}
+          onChange={handleSortValueChange}
+          className="form-control w-25">
+          <option value="">Sort By</option>
+          <option value="price&order=asc">Price: Low to High</option>
+          <option value="price&order=desc">Price: High to Low</option>
+          <option value="rating&order=asc">Rating: Low to High</option>
+          <option value="rating&order=desc">Rating: High to Low</option>
+          <option value="title&order=asc">Title: A to Z</option>
+          <option value="title&order=desc">Title: Z to A</option>
+          <option value="category&order=asc">Category: A to Z</option>
+          <option value="category&order=desc">Category: Z to A</option>
+        </select>
+      </div>
       {loading && <p>Loading...</p>}
       {error && <p className="text-danger">{error}</p>}
       <ul className="list-group px-5">
@@ -49,7 +80,7 @@ const ProductList = () => {
                 alt={product.title}
               />
               <div>
-                <b>{product.title}</b> ({product.category})
+                <b>{product.title}</b> in {product.category} <b>({product.price} $)</b> rate: {product.rating}
               </div>
             </Link>
           </li>
