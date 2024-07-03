@@ -1,0 +1,10 @@
+ul {
+    list-style-type: none;
+  }
+
+  .not-found-image {
+    width: 40%;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 5%;
+  }

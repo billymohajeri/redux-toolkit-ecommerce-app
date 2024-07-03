@@ -1,3 +1,24 @@
+type Dimensions = {
+  width: number
+  height: number
+  depth: number
+}
+
+type Review = {
+  rating: number
+  comment: string
+  date: string
+  reviewerName: string
+  reviewerEmail: string
+}
+
+type Meta = {
+  createdAt: string
+  updatedAt: string
+  barcode: string
+  qrCode: string
+}
+
 export type Product = {
   id: number
   title: string
@@ -11,35 +32,21 @@ export type Product = {
   brand: string
   sku: string
   weight: number
-  dimensions: {
-    width: number
-    height: number
-    depth: number
-  }
+  dimensions: Dimensions
   warrantyInformation: string
   shippingInformation: string
   availabilityStatus: string
-  reviews: {
-    rating: number
-    comment: string
-    date: string
-    reviewerName: string
-    reviewerEmail: string
-  }[]
+  reviews: Review[]
   returnPolicy: string
   minimumOrderQuantity: number
-  meta: {
-    createdAt: string
-    updatedAt: string
-    barcode: string
-    qrCode: string
-  }
+  meta: Meta
   images: string[]
   thumbnail: string
 }
 
 export type ProductsState = {
   products: Product[]
+  product: Product | null
   loading: boolean
   error: null | string
 }
