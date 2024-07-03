@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { AppDispatch, RootState } from '../store/store'
@@ -7,15 +7,14 @@ import { fetchProducts } from '../features/products/productSlice'
 const ProductList = () => {
   const dispatch: AppDispatch = useDispatch()
 
-  const [search, setSearch] = useState('')
+  const [searchValue, setSearchValue] = useState('')
 
   useEffect(() => {
-    dispatch(fetchProducts())
-  }, [dispatch])
+    dispatch(fetchProducts(searchValue))
+  }, [dispatch, searchValue])
 
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
-    setSearch(event.target.value)
+  const handleSearchValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value)
   }
 
   const { products, loading, error } = useSelector((state: RootState) => state.productR)
@@ -26,8 +25,8 @@ const ProductList = () => {
       <input
         type="text"
         name="searchInput"
-        value={search}
-        onChange={handleSearchChange}
+        value={searchValue}
+        onChange={handleSearchValueChange}
         className="form-control mb-3"
         placeholder="Search for products..."
       />

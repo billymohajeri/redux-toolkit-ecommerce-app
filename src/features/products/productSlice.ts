@@ -3,15 +3,23 @@ import { ProductsState } from './productType'
 
 const initialState: ProductsState = { products: [], product: null, loading: false, error: null }
 
-export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
-  try {
-    const response = await fetch('https://dummyjson.com/products')
-    const data = await response.json()
-    return data.products
-  } catch (error) {
-    console.log(error)
+export const fetchProducts = createAsyncThunk(
+  'products/fetchProducts',
+  async (searchValue: string) => {
+    let url = 'https://dummyjson.com/products'
+    try {
+      if (searchValue) {
+        // 'https://dummyjson.com/products?limit=10&skip=10&select=title,price'
+        url += `/search?q=${searchValue}`
+      }
+      const response = await fetch(url)
+      const data = await response.json()
+      return data.products
+    } catch (error) {
+      console.log(error)
+    }
   }
-})
+)
 
 export const fetchSingleProduct = createAsyncThunk(
   'products/fetchSingleProduct',
