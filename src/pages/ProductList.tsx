@@ -11,7 +11,7 @@ const ProductList = () => {
   const [sortValue, setSortValue] = useState('')
 
   const { products, loading, error } = useSelector((state: RootState) => state.productR)
-  
+
   useEffect(() => {
     dispatch(fetchProducts({ searchValue, sortValue }))
   }, [dispatch, searchValue, sortValue])
@@ -30,6 +30,9 @@ const ProductList = () => {
     dispatch(fetchProducts({ searchValue: '', sortValue: '' }))
   }
 
+  if (loading) <div className="container mt-5">Loading...</div>
+
+  if (error) <div className="container mt-5 text-danger">{error}</div>
 
   return (
     <div className="container mt-5">
@@ -62,8 +65,6 @@ const ProductList = () => {
           <option value="category&order=desc">Category: Z to A</option>
         </select>
       </div>
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-danger">{error}</p>}
       <ul className="list-group px-5">
         {products.map((product) => (
           <li
@@ -81,7 +82,8 @@ const ProductList = () => {
                 alt={product.title}
               />
               <div>
-                <b>{product.title}</b> in {product.category} <b>({product.price} $)</b> rate: {product.rating}
+                <b>{product.title}</b> in {product.category} <b>({product.price} $)</b> rate:{' '}
+                {product.rating}
               </div>
             </Link>
           </li>

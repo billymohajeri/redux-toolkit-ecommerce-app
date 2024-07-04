@@ -9,7 +9,6 @@ export const fetchProducts = createAsyncThunk(
     let url = 'https://dummyjson.com/products'
     try {
       if (searchValue) {
-        console.log(searchValue)
         url += `/search?q=${searchValue}`
       }
       if (sortValue) {
@@ -19,7 +18,6 @@ export const fetchProducts = createAsyncThunk(
           url += '?'
         }
         url += `sortBy=${sortValue}`
-        console.log(url)
       }
 
       const response = await fetch(url)
@@ -41,7 +39,6 @@ export const fetchSingleProduct = createAsyncThunk(
   async (id: string) => {
     try {
       const response = await fetch(`https://dummyjson.com/products/${id}`)
-      console.log(`https://dummyjson.com/products/${id}`)
       const data = await response.json()
       return data
     } catch (error) {
