@@ -49,9 +49,18 @@ export type ProductsState = {
   product: Product | null
   loading: boolean
   error: null | string
+  totalProducts: number
 }
 
 export type FetchProductsParams = {
-  searchValue?: string;
-  sortValue?: string;
-};
+  searchValue?: string
+  sortValue?: string
+  currentPage: number
+  productsPerPage: number
+}
+
+export type PaginationProps = {
+  totalPages: number
+  currentPage: number
+  handleCurrentPageChange: (page: number) => void
+}

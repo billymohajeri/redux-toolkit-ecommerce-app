@@ -3,31 +3,43 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { AppDispatch, RootState } from '../store/store'
 import { fetchProducts } from '../features/products/productSlice'
+import Pagination from '../components/Pagination'
 
 const ProductList = () => {
   const dispatch: AppDispatch = useDispatch()
 
   const [searchValue, setSearchValue] = useState('')
   const [sortValue, setSortValue] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const productsPerPage = 10
 
-  const { products, loading, error } = useSelector((state: RootState) => state.productR)
+  const { products, loading, error, totalProducts } = useSelector(
+    (state: RootState) => state.productR
+  )
+  const totalPages = Math.ceil(totalProducts / productsPerPage)
 
   useEffect(() => {
-    dispatch(fetchProducts({ searchValue, sortValue }))
-  }, [dispatch, searchValue, sortValue])
+    dispatch(fetchProducts({ searchValue, sortValue, currentPage, productsPerPage }))
+  }, [dispatch, searchValue, sortValue, currentPage])
 
   const handleSearchValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value)
+    setCurrentPage(1)
   }
 
   const handleSortValueChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSortValue(event.target.value)
+    setCurrentPage(1)
+  }
+  const handleCurrentPageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber)
   }
 
   const handleReset = () => {
     setSearchValue('')
     setSortValue('')
-    dispatch(fetchProducts({ searchValue: '', sortValue: '' }))
+    setCurrentPage(1)
+    dispatch(fetchProducts({ searchValue: '', sortValue: '', currentPage: 1, productsPerPage }))
   }
 
   if (loading) <div className="container mt-5">Loading...</div>
@@ -36,6 +48,11 @@ const ProductList = () => {
 
   return (
     <div className="container mt-5">
+      <Pagination
+        totalPages={totalPages}
+        handleCurrentPageChange={handleCurrentPageChange}
+        currentPage={currentPage}
+      />
       <h1 className="display-4 py-5 text-center">List of all products</h1>
       <input
         type="text"

@@ -1,36 +1,34 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { FetchProductsParams, ProductsState } from './productType'
 
-const initialState: ProductsState = { products: [], product: null, loading: false, error: null }
+const initialState: ProductsState = { products: [], product: null, totalProducts: 0, loading: false, error: null };
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
-  async ({ searchValue = '', sortValue = '' }: FetchProductsParams) => {
-    let url = 'https://dummyjson.com/products'
+  async ({ searchValue, sortValue="", currentPage, productsPerPage }: FetchProductsParams) => {
+    let url = `https://dummyjson.com/products?limit=${productsPerPage}&skip=${(currentPage - 1) * productsPerPage}`;
     try {
-      const [sortField, sortOrder] = sortValue.split('_')
+      const [sortField, sortOrder] = sortValue.split('_');
       if (searchValue) {
-        url += `/search?q=${searchValue}`
+        url += `&q=${searchValue}`;
       }
       if (sortValue) {
-        searchValue ? (url += '&') : (url += '?') // This line is meant to handle both sort and search together
-        url += `sortBy=${sortField}&order=${sortOrder}`
+        url += `&sortBy=${sortField}&order=${sortOrder}`;
       }
-      console.log(url);
-      const response = await fetch(url)
-      const data = await response.json()
+      const response = await fetch(url);
+      const data = await response.json();
       if (searchValue) {
         data.products = data.products.filter((product: { title: string }) =>
           product.title.toLowerCase().includes(searchValue.toLowerCase())
-        )
+        );
       }
-      return data.products
+      return { products: data.products, totalProducts: data.total };
     } catch (error) {
-      console.log(error)
+      console.log(error);
+      throw error;
     }
   }
-)
-
+);
 export const fetchSingleProduct = createAsyncThunk(
   'products/fetchSingleProduct',
   async (id: string) => {
@@ -56,7 +54,8 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false
-        state.products = action.payload
+        state.products = action.payload?.products
+        state.totalProducts = action.payload?.totalProducts
       })
       .addCase(fetchProducts.rejected, (state) => {
         state.loading = false
