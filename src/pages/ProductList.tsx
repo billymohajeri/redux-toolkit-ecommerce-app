@@ -82,8 +82,10 @@ const ProductList = () => {
                 alt={product.title}
               />
               <div>
-                <b>{product.title}</b> in {product.category} <b>({product.price} $)</b> rate:{' '}
-                {product.rating}
+                {product.id}. <b>{product.title}</b> in {product.category}
+                <p>
+                  <b>({product.price} $)</b> rate: {product.rating}
+                </p>
               </div>
             </Link>
           </li>
