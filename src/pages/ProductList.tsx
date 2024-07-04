@@ -10,6 +10,8 @@ const ProductList = () => {
   const [searchValue, setSearchValue] = useState('')
   const [sortValue, setSortValue] = useState('')
 
+  const { products, loading, error } = useSelector((state: RootState) => state.productR)
+  
   useEffect(() => {
     dispatch(fetchProducts({ searchValue, sortValue }))
   }, [dispatch, searchValue, sortValue])
@@ -28,7 +30,6 @@ const ProductList = () => {
     dispatch(fetchProducts({ searchValue: '', sortValue: '' }))
   }
 
-  const { products, loading, error } = useSelector((state: RootState) => state.productR)
 
   return (
     <div className="container mt-5">
