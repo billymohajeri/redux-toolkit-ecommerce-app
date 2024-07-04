@@ -55,14 +55,14 @@ const ProductList = () => {
           onChange={handleSortValueChange}
           className="form-control w-25">
           <option value="">Sort By</option>
-          <option value="price&order=asc">Price: Low to High</option>
-          <option value="price&order=desc">Price: High to Low</option>
-          <option value="rating&order=asc">Rating: Low to High</option>
-          <option value="rating&order=desc">Rating: High to Low</option>
-          <option value="title&order=asc">Title: A to Z</option>
-          <option value="title&order=desc">Title: Z to A</option>
-          <option value="category&order=asc">Category: A to Z</option>
-          <option value="category&order=desc">Category: Z to A</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+          <option value="rating_asc">Rating: Low to High</option>
+          <option value="rating_desc">Rating: High to Low</option>
+          <option value="title_asc">Title: A to Z</option>
+          <option value="title_desc">Title: Z to A</option>
+          <option value="category_asc">Category: A to Z</option>
+          <option value="category_desc">Category: Z to A</option>
         </select>
       </div>
       <ul className="list-group px-5">

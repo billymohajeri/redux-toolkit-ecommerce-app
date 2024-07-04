@@ -50,3 +50,8 @@ export type ProductsState = {
   loading: boolean
   error: null | string
 }
+
+export type FetchProductsParams = {
+  searchValue?: string;
+  sortValue?: string;
+};

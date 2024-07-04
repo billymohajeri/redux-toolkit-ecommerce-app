@@ -1,25 +1,22 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { ProductsState } from './productType'
+import { FetchProductsParams, ProductsState } from './productType'
 
 const initialState: ProductsState = { products: [], product: null, loading: false, error: null }
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
-  async ({ searchValue, sortValue }: { searchValue: string; sortValue: string }) => {
+  async ({ searchValue = '', sortValue = '' }: FetchProductsParams) => {
     let url = 'https://dummyjson.com/products'
     try {
+      const [sortField, sortOrder] = sortValue.split('_')
       if (searchValue) {
         url += `/search?q=${searchValue}`
       }
       if (sortValue) {
-        if (searchValue) {
-          url += '&'
-        } else {
-          url += '?'
-        }
-        url += `sortBy=${sortValue}`
+        searchValue ? (url += '&') : (url += '?') // This line is meant to handle both sort and search together
+        url += `sortBy=${sortField}&order=${sortOrder}`
       }
-
+      console.log(url);
       const response = await fetch(url)
       const data = await response.json()
       if (searchValue) {
